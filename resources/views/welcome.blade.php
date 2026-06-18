@@ -13,30 +13,22 @@
 
         body {
             min-height: 100vh;
-            background-color: #0d0d0d;
+            background-color: #000;
             font-family: 'Courier New', Courier, monospace;
             -webkit-font-smoothing: antialiased;
         }
 
-        .border-b {
-            border-bottom: 1px solid #1e1e1e;
-        }
-
-        .border-border {
-            border-color: #1e1e1e;
-        }
-
         .nav {
-            border-bottom: 1px solid #1e1e1e;
+            border-bottom: 1px solid #333;
         }
 
         .nav-inner {
-            max-width: 1152px;
+            max-width: 100%;
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.75rem 1rem;
+            padding: 1rem 1rem;
         }
 
         .nav-left {
@@ -47,19 +39,19 @@
             font-size: 0.875rem;
             font-weight: bold;
             letter-spacing: 0.05em;
-            color: #e0e0e0;
+            color: #fff;
         }
 
         .nav-left .dollar {
-            color: #27c93f;
+            color: #fff;
         }
 
         .nav-left .cmd {
-            color: #27c93f;
+            color: #fff;
         }
 
         .nav-left .path {
-            color: #e0e0e0;
+            color: #fff;
         }
 
         .nav-right {
@@ -67,11 +59,11 @@
             align-items: center;
             gap: 1.25rem;
             font-size: 0.875rem;
-            color: #666;
+            color: #888;
         }
 
         .nav-right a, .nav-right button {
-            color: #666;
+            color: #888;
             text-decoration: none;
             background: none;
             border: none;
@@ -81,7 +73,7 @@
         }
 
         .nav-right a:hover, .nav-right button:hover {
-            color: #27c93f;
+            color: #fff;
         }
 
         .mobile-toggle {
@@ -90,22 +82,22 @@
             height: 1.75rem;
             align-items: center;
             justify-content: center;
-            border: 1px solid #1e1e1e;
+            border: 1px solid #333;
             background: none;
             cursor: pointer;
-            color: #666;
+            color: #888;
             font-family: inherit;
         }
 
         main {
-            max-width: 1152px;
+            max-width: 100%;
             margin: 0 auto;
             padding: 1.5rem 1rem;
         }
 
         .card {
-            border: 1px solid #1e1e1e;
-            background-color: #111;
+            border: 1px solid #333;
+            background-color: #0a0a0a;
             padding: 1.5rem;
             margin-bottom: 3rem;
         }
@@ -113,11 +105,11 @@
         .card-header {
             margin-bottom: 0.5rem;
             font-size: 0.75rem;
-            color: #666;
+            color: #888;
         }
 
         .card-header .dollar {
-            color: #27c93f;
+            color: #fff;
         }
 
         .card-title {
@@ -125,26 +117,27 @@
             font-weight: 400;
             letter-spacing: -0.025em;
             margin-bottom: 0.75rem;
+            color: #fff;
         }
 
         .card-title .primary {
-            color: #27c93f;
+            color: #fff;
         }
 
         .card-sub {
             font-size: 0.875rem;
-            color: #666;
+            color: #888;
         }
 
         .card-sub .user {
-            color: #e0e0e0;
+            color: #fff;
         }
 
         .section-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid #1e1e1e;
+            border-bottom: 1px solid #333;
             padding-bottom: 0.5rem;
             margin-bottom: 1rem;
         }
@@ -152,44 +145,44 @@
         .section-title {
             font-size: 0.875rem;
             font-weight: 400;
-            color: #666;
+            color: #888;
         }
 
         .section-title .dollar {
-            color: #27c93f;
+            color: #fff;
         }
 
         .section-title .count {
-            color: #666;
+            color: #888;
         }
 
         .view-all {
             font-size: 0.75rem;
-            color: #666;
+            color: #888;
             text-decoration: none;
         }
 
         .view-all:hover {
-            color: #27c93f;
+            color: #fff;
         }
 
         .empty-card {
-            border: 1px solid #1e1e1e;
-            background-color: #111;
+            border: 1px solid #333;
+            background-color: #0a0a0a;
             padding: 2rem;
             text-align: center;
         }
 
         .empty-text {
             font-size: 0.875rem;
-            color: #666;
+            color: #888;
         }
 
         .cursor-blink {
             display: inline-block;
             width: 7px;
             height: 1em;
-            background-color: #27c93f;
+            background-color: #fff;
             vertical-align: middle;
             margin-left: 2px;
             animation: blink 1s step-end infinite;
@@ -202,7 +195,7 @@
 
         @media (min-width: 640px) {
             .nav-inner {
-                padding: 0.75rem 1.5rem;
+                padding: 1rem 1.5rem;
             }
             .card {
                 padding: 1.5rem;
@@ -214,7 +207,7 @@
 
         @media (min-width: 1024px) {
             .nav-inner {
-                padding: 0.75rem 2rem;
+                padding: 1rem 2rem;
             }
             main {
                 padding: 2rem 2rem;
@@ -244,7 +237,7 @@
             <div class="nav-right">
                 <a href="/writeups">writeups/</a>
                 <a href="/stats">stats/</a>
-                <button>[login]</button>
+                <a href="{{ route('login') }}">[login]</a>
             </div>
         </div>
     </nav>
