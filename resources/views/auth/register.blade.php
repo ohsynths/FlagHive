@@ -1,204 +1,109 @@
-<!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>FlagHive - register</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+@extends('layouts.app')
 
-        body {
-            min-height: 100vh;
-            background-color: #000;
-            font-family: 'Courier New', Courier, monospace;
-            -webkit-font-smoothing: antialiased;
-            display: flex;
-            flex-direction: column;
-        }
+@section('title', 'FlagHive - register')
 
-        .nav {
-            border-bottom: 1px solid #333;
-        }
+@section('nav-right')
+    <a href="{{ route('login') }}">[login]</a>
+@endsection
 
-        .nav-inner {
-            max-width: 100%;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem 1rem;
-        }
+@section('styles')
+    main {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1rem;
+    }
 
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: bold;
-            letter-spacing: 0.05em;
-            color: #fff;
-        }
+    .auth-card {
+        border: 1px solid #333;
+        background-color: #0a0a0a;
+        width: 100%;
+        max-width: 400px;
+        padding: 2rem;
+    }
 
-        .nav-left .dollar { color: #fff; }
-        .nav-left .cmd { color: #fff; }
-        .nav-left .path { color: #fff; }
+    .auth-title {
+        color: #fff;
+        font-size: 1.2rem;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+    }
 
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 1.25rem;
-            font-size: 0.875rem;
-            color: #888;
-        }
+    .auth-header {
+        color: #888;
+        font-size: 0.75rem;
+        margin-bottom: 1.5rem;
+    }
 
-        .nav-right a {
-            color: #888;
-            text-decoration: none;
-        }
+    .auth-header .dollar { color: #fff; }
 
-        .nav-right a:hover { color: #fff; }
+    .form-group { margin-bottom: 1rem; }
 
-        main {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 1rem;
-        }
+    .form-group label {
+        display: block;
+        color: #888;
+        font-size: 0.8rem;
+        margin-bottom: 0.4rem;
+    }
 
-        .auth-card {
-            border: 1px solid #333;
-            background-color: #0a0a0a;
-            width: 100%;
-            max-width: 400px;
-            padding: 2rem;
-        }
+    .form-group input {
+        width: 100%;
+        padding: 0.6rem 0.75rem;
+        background: #000;
+        border: 1px solid #333;
+        color: #fff;
+        font-family: inherit;
+        font-size: 0.875rem;
+        outline: none;
+    }
 
-        .auth-title {
-            color: #fff;
-            font-size: 1.2rem;
-            font-weight: 400;
-            margin-bottom: 0.5rem;
-        }
+    .form-group input:focus { border-color: #fff; }
 
-        .auth-header {
-            color: #888;
-            font-size: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
+    .error-box {
+        border: 1px solid #333;
+        background-color: #0a0a0a;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        color: #888;
+        font-size: 0.8rem;
+    }
 
-        .auth-header .dollar { color: #fff; }
+    .error-box .error-title { color: #fff; margin-bottom: 0.25rem; }
 
-        .form-group {
-            margin-bottom: 1rem;
-        }
+    .btn {
+        width: 100%;
+        padding: 0.6rem;
+        background: none;
+        border: 1px solid #fff;
+        color: #fff;
+        font-family: inherit;
+        font-size: 0.875rem;
+        cursor: pointer;
+        margin-top: 0.5rem;
+    }
 
-        .form-group label {
-            display: block;
-            color: #888;
-            font-size: 0.8rem;
-            margin-bottom: 0.4rem;
-        }
+    .btn:hover {
+        background: #fff;
+        color: #000;
+    }
 
-        .form-group input {
-            width: 100%;
-            padding: 0.6rem 0.75rem;
-            background: #000;
-            border: 1px solid #333;
-            color: #fff;
-            font-family: inherit;
-            font-size: 0.875rem;
-            outline: none;
-        }
+    .auth-footer {
+        color: #888;
+        font-size: 0.8rem;
+        margin-top: 1rem;
+        text-align: center;
+    }
 
-        .form-group input:focus {
-            border-color: #fff;
-        }
+    .auth-footer a {
+        color: #fff;
+        text-decoration: none;
+    }
 
-        .error-box {
-            border: 1px solid #333;
-            background-color: #0a0a0a;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            color: #888;
-            font-size: 0.8rem;
-        }
+    .auth-footer a:hover { text-decoration: underline; }
+@endsection
 
-        .error-box .error-title {
-            color: #fff;
-            margin-bottom: 0.25rem;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 0.6rem;
-            background: none;
-            border: 1px solid #fff;
-            color: #fff;
-            font-family: inherit;
-            font-size: 0.875rem;
-            cursor: pointer;
-            margin-top: 0.5rem;
-        }
-
-        .btn:hover {
-            background: #fff;
-            color: #000;
-        }
-
-        .auth-footer {
-            color: #888;
-            font-size: 0.8rem;
-            margin-top: 1rem;
-            text-align: center;
-        }
-
-        .auth-footer a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .auth-footer a:hover {
-            text-decoration: underline;
-        }
-
-        .cursor-blink::after {
-            content: '';
-            display: inline;
-            border-right: 7px solid #fff;
-            animation: blink 1s step-end infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        @media (min-width: 640px) {
-            .nav-inner { padding: 1rem 1.5rem; }
-        }
-        @media (min-width: 1024px) {
-            .nav-inner { padding: 1rem 2rem; }
-        }
-    </style>
-</head>
-<body>
-    <nav class="nav">
-        <div class="nav-inner">
-            <a class="nav-left" href="/">
-                <span class="dollar">$</span>
-                <span class="cmd">cd</span>
-                <span class="path cursor-blink">~/flaghive</span>
-            </a>
-            <div class="nav-right">
-                <a href="{{ route('writeups') }}">writeups/</a>
-                <a href="{{ route('stats') }}">stats/</a>
-                <a href="{{ route('login') }}">[login]</a>
-            </div>
-        </div>
-    </nav>
-
+@section('content')
     <main>
         <div class="auth-card">
             <p class="auth-header"><span class="dollar">$</span> register</p>
@@ -244,5 +149,4 @@
             </div>
         </div>
     </main>
-</body>
-</html>
+@endsection
