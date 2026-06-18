@@ -3,15 +3,15 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('pages.home');
 });
 
 Route::get('/writeups', function () {
-    return view('writeups');
+    return view('pages.writeups');
 })->name('writeups');
 
 Route::get('/stats', function () {
-    return view('stats');
+    return view('pages.stats');
 })->name('stats');
 
 Route::get('/login', function () {

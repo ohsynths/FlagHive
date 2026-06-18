@@ -95,6 +95,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
+            margin-bottom: 2rem;
         }
 
         .stat-box {
@@ -187,8 +188,8 @@
                 <span class="path">~/flaghive</span>
             </a>
             <div class="nav-right">
-                <a href="/writeups">writeups/</a>
-                <a href="/stats">stats/</a>
+                <a href="{{ route('writeups') }}">writeups/</a>
+                <a href="{{ route('stats') }}">stats/</a>
                 <a href="{{ route('login') }}">[login]</a>
             </div>
         </div>
@@ -198,7 +199,7 @@
         <div class="card">
             <p class="card-header"><span class="dollar">$</span> cat stats/overview</p>
             <h1 class="card-title">Statistics<span class="cursor-blink"></span></h1>
-            <p class="card-sub">Overview of <span class="highlight">0</span> writeups across <span class="highlight">0</span> challenges</p>
+            <p class="card-sub">Overview of <span class="highlight">0</span> writeups across <span class="highlight">0</span> CTF events</p>
         </div>
 
         <div class="stat-grid">
@@ -208,19 +209,14 @@
                 <div class="stat-detail">submissions</div>
             </div>
             <div class="stat-box">
-                <div class="stat-label"><span class="dollar">$</span> challenges</div>
+                <div class="stat-label"><span class="dollar">$</span> categories</div>
                 <div class="stat-value">0</div>
-                <div class="stat-detail">unique</div>
+                <div class="stat-detail">covered</div>
             </div>
             <div class="stat-box">
                 <div class="stat-label"><span class="dollar">$</span> ctf_events</div>
                 <div class="stat-value">0</div>
                 <div class="stat-detail">participated</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label"><span class="dollar">$</span> solve_rate</div>
-                <div class="stat-value">0%</div>
-                <div class="stat-detail">of attempted</div>
             </div>
         </div>
 

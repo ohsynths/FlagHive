@@ -91,24 +91,40 @@
 
         .filter-bar {
             display: flex;
+            flex-wrap: wrap;
             gap: 0.75rem;
             margin-bottom: 1.5rem;
-            flex-wrap: wrap;
         }
 
         .filter-bar select, .filter-bar input {
-            background: #000;
+            background: #0a0a0a;
             border: 1px solid #333;
             color: #888;
             padding: 0.5rem 0.75rem;
             font-family: inherit;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
         }
 
         .filter-bar select:focus, .filter-bar input:focus {
             border-color: #fff;
             color: #fff;
+        }
+
+        .filter-bar input.search {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-bar select.sm {
+            width: 140px;
+        }
+
+        .filter-bar select.md {
+            width: 160px;
         }
 
         .writeup-item {
@@ -180,8 +196,8 @@
                 <span class="path">~/flaghive</span>
             </a>
             <div class="nav-right">
-                <a href="/writeups">writeups/</a>
-                <a href="/stats">stats/</a>
+                <a href="{{ route('writeups') }}">writeups/</a>
+                <a href="{{ route('stats') }}">stats/</a>
                 <a href="{{ route('login') }}">[login]</a>
             </div>
         </div>
@@ -195,8 +211,9 @@
         </div>
 
         <div class="filter-bar">
-            <select>
-                <option>all categories</option>
+            <input type="text" class="search" placeholder="$ grep -i &quot;&quot;">
+            <select class="sm">
+                <option>[category]</option>
                 <option>web</option>
                 <option>pwn</option>
                 <option>rev</option>
@@ -205,10 +222,13 @@
                 <option>misc</option>
                 <option>osint</option>
             </select>
-            <select>
-                <option>all ctf</option>
+            <select class="md">
+                <option>[ctf]</option>
             </select>
-            <input type="text" placeholder="search...">
+            <select class="sm">
+                <option>newest</option>
+                <option>oldest</option>
+            </select>
         </div>
 
         <div class="card" style="text-align:center;padding:3rem;color:#555">

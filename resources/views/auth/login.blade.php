@@ -195,8 +195,8 @@
                 <span class="path">~/flaghive</span>
             </a>
             <div class="nav-right">
-                <a href="/writeups">writeups/</a>
-                <a href="/stats">stats/</a>
+                <a href="{{ route('writeups') }}">writeups/</a>
+                <a href="{{ route('stats') }}">stats/</a>
                 <a href="{{ route('register') }}">[register]</a>
             </div>
         </div>

@@ -235,8 +235,8 @@
             </a>
             <button class="mobile-toggle" aria-label="Toggle menu">=</button>
             <div class="nav-right">
-                <a href="/writeups">writeups/</a>
-                <a href="/stats">stats/</a>
+                <a href="{{ route('writeups') }}">writeups/</a>
+                <a href="{{ route('stats') }}">stats/</a>
                 <a href="{{ route('login') }}">[login]</a>
             </div>
         </div>
@@ -259,7 +259,7 @@
                 <h2 class="section-title">
                     <span class="dollar">$</span> ls -la writeups/ | tail -<span class="count">0</span>
                 </h2>
-                <a class="view-all" href="/writeups">[view all]</a>
+                <a class="view-all" href="{{ route('writeups') }}">[view all]</a>
             </div>
             <div class="empty-card">
                 <p class="empty-text">No writeups yet</p>
