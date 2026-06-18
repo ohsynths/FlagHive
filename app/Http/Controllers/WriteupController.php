@@ -75,4 +75,15 @@ class WriteupController extends Controller
 
         return redirect()->route('writeups.show', $writeup);
     }
+
+    public function destroy(Writeup $writeup)
+    {
+        if ($writeup->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $writeup->delete();
+
+        return redirect()->route('writeups')->with('success', 'Writeup deleted.');
+    }
 }

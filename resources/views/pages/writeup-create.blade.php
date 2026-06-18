@@ -107,6 +107,25 @@
         color: #fff;
     }
 
+    .file-upload {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .file-upload input[type="file"] {
+        font-family: inherit;
+        font-size: 0.75rem;
+        color: #888;
+        width: auto;
+    }
+
+    .file-upload label {
+        font-size: 0.75rem;
+        color: #555;
+    }
+
     .error {
         font-size: 0.75rem;
         color: #888;
@@ -163,9 +182,25 @@
 
                 <div class="form-group">
                     <label><span class="dollar">$</span> content (markdown)</label>
-                    <textarea name="content" required>{{ old('content') }}</textarea>
+                    <div class="file-upload">
+                        <label>or upload .md:</label>
+                        <input type="file" accept=".md,text/markdown" onchange="readFile(this)">
+                    </div>
+                    <textarea name="content" id="content" required>{{ old('content') }}</textarea>
                     @error('content') <p class="error">{{ $message }}</p> @enderror
                 </div>
+
+                <script>
+                function readFile(input) {
+                    const file = input.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('content').value = e.target.result;
+                    };
+                    reader.readAsText(file);
+                }
+                </script>
 
                 <div class="form-actions">
                     <button type="submit">publish</button>

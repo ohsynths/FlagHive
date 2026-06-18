@@ -17,6 +17,7 @@ Route::get('/writeups', [WriteupController::class, 'index'])->name('writeups');
 Route::get('/writeups/create', [WriteupController::class, 'create'])->middleware('auth')->name('writeups.create');
 Route::post('/writeups', [WriteupController::class, 'store'])->middleware('auth')->name('writeups.store');
 Route::get('/writeups/{writeup}', [WriteupController::class, 'show'])->name('writeups.show');
+Route::delete('/writeups/{writeup}', [WriteupController::class, 'destroy'])->middleware('auth')->name('writeups.destroy');
 
 Route::get('/stats', function () {
     $totalWriteups = Writeup::count();

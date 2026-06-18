@@ -93,6 +93,80 @@
         text-decoration: underline;
     }
 
+    .delete-form {
+        margin-top: 1rem;
+    }
+
+    .delete-form button {
+        background: none;
+        border: 1px solid #333;
+        color: #888;
+        padding: 0.35rem 0.75rem;
+        font-family: inherit;
+        font-size: 0.75rem;
+        cursor: pointer;
+    }
+
+    .delete-form button:hover {
+        border-color: #fff;
+        color: #fff;
+    }
+
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.8);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-overlay.open {
+        display: flex;
+    }
+
+    .modal-box {
+        background: #0a0a0a;
+        border: 1px solid #333;
+        padding: 1.5rem;
+        max-width: 400px;
+        width: 90%;
+    }
+
+    .modal-box p {
+        font-size: 0.875rem;
+        color: #ccc;
+        margin-bottom: 1.25rem;
+        text-align: center;
+    }
+
+    .modal-actions {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: center;
+    }
+
+    .modal-actions button {
+        background: none;
+        border: 1px solid #333;
+        color: #888;
+        padding: 0.4rem 1rem;
+        font-family: inherit;
+        font-size: 0.75rem;
+        cursor: pointer;
+    }
+
+    .modal-actions button:hover {
+        border-color: #fff;
+        color: #fff;
+    }
+
+    .modal-actions .confirm {
+        border-color: #fff;
+        color: #fff;
+    }
+
     .markdown-body blockquote {
         border-left: 3px solid #333;
         padding-left: 1rem;
@@ -177,6 +251,50 @@
             <div class="markdown-body">
                 {!! $html !!}
             </div>
+
+            @auth
+                @if (auth()->user()->id === $writeup->user_id)
+                    <form class="delete-form" method="POST" action="{{ route('writeups.destroy', $writeup) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" onclick="showDeleteModal()">[delete]</button>
+                    </form>
+                @endif
+            @endauth
         </div>
     </main>
+
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-box">
+            <p>Delete this writeup? This cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="confirm" onclick="confirmDelete()">[yes]</button>
+                <button onclick="hideDeleteModal()">[no]</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let pendingForm = null;
+
+        function showDeleteModal() {
+            pendingForm = event.target.closest('form');
+            document.getElementById('deleteModal').classList.add('open');
+        }
+
+        function hideDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('open');
+            pendingForm = null;
+        }
+
+        function confirmDelete() {
+            if (pendingForm) {
+                pendingForm.submit();
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') hideDeleteModal();
+        });
+    </script>
 @endsection
