@@ -1,39 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FlagHive</title>
-    <script>
-        (function() {
-            var t = localStorage.getItem('theme');
-            if (t) {
-                document.documentElement.className = t;
-            } else {
-                document.documentElement.className =
-                    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            }
-        })();
-    </script>
     <style>
-        :root {
-            --bg: #f5f5f5;
-            --card-bg: #fff;
-            --border: #ddd;
-            --text: #222;
-            --muted: #999;
-            --accent: #000;
-        }
-
-        .dark {
-            --bg: #000;
-            --card-bg: #0a0a0a;
-            --border: #333;
-            --text: #fff;
-            --muted: #888;
-            --accent: #fff;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -42,14 +13,13 @@
 
         body {
             min-height: 100vh;
-            background-color: var(--bg);
-            color: var(--muted);
+            background-color: #000;
             font-family: 'Courier New', Courier, monospace;
             -webkit-font-smoothing: antialiased;
         }
 
         .nav {
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid #333;
         }
 
         .nav-inner {
@@ -69,23 +39,31 @@
             font-size: 0.875rem;
             font-weight: bold;
             letter-spacing: 0.05em;
-            color: var(--text);
+            color: #fff;
         }
 
-        .nav-left .dollar { color: var(--accent); }
-        .nav-left .cmd { color: var(--accent); }
-        .nav-left .path { color: var(--text); }
+        .nav-left .dollar {
+            color: #fff;
+        }
+
+        .nav-left .cmd {
+            color: #fff;
+        }
+
+        .nav-left .path {
+            color: #fff;
+        }
 
         .nav-right {
             display: flex;
             align-items: center;
             gap: 1.25rem;
             font-size: 0.875rem;
-            color: var(--muted);
+            color: #888;
         }
 
         .nav-right a, .nav-right button {
-            color: var(--muted);
+            color: #888;
             text-decoration: none;
             background: none;
             border: none;
@@ -95,22 +73,7 @@
         }
 
         .nav-right a:hover, .nav-right button:hover {
-            color: var(--accent);
-        }
-
-        .theme-toggle {
-            background: none;
-            border: 1px solid var(--border);
-            font-family: inherit;
-            font-size: 0.75rem;
-            color: var(--muted);
-            cursor: pointer;
-            padding: 2px 6px;
-        }
-
-        .theme-toggle:hover {
-            color: var(--accent);
-            border-color: var(--accent);
+            color: #fff;
         }
 
         .mobile-toggle {
@@ -119,10 +82,10 @@
             height: 1.75rem;
             align-items: center;
             justify-content: center;
-            border: 1px solid var(--border);
+            border: 1px solid #333;
             background: none;
             cursor: pointer;
-            color: var(--muted);
+            color: #888;
             font-family: inherit;
         }
 
@@ -133,8 +96,8 @@
         }
 
         .card {
-            border: 1px solid var(--border);
-            background-color: var(--card-bg);
+            border: 1px solid #333;
+            background-color: #0a0a0a;
             padding: 1.5rem;
             margin-bottom: 3rem;
         }
@@ -142,33 +105,39 @@
         .card-header {
             margin-bottom: 0.5rem;
             font-size: 0.75rem;
-            color: var(--muted);
+            color: #888;
         }
 
-        .card-header .dollar { color: var(--accent); }
+        .card-header .dollar {
+            color: #fff;
+        }
 
         .card-title {
             font-size: 1.5rem;
             font-weight: 400;
             letter-spacing: -0.025em;
             margin-bottom: 0.75rem;
-            color: var(--text);
+            color: #fff;
         }
 
-        .card-title .primary { color: var(--accent); }
+        .card-title .primary {
+            color: #fff;
+        }
 
         .card-sub {
             font-size: 0.875rem;
-            color: var(--muted);
+            color: #888;
         }
 
-        .card-sub .user { color: var(--text); }
+        .card-sub .user {
+            color: #fff;
+        }
 
         .section-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid #333;
             padding-bottom: 0.5rem;
             margin-bottom: 1rem;
         }
@@ -176,37 +145,44 @@
         .section-title {
             font-size: 0.875rem;
             font-weight: 400;
-            color: var(--muted);
+            color: #888;
         }
 
-        .section-title .dollar { color: var(--accent); }
-        .section-title .count { color: var(--muted); }
+        .section-title .dollar {
+            color: #fff;
+        }
+
+        .section-title .count {
+            color: #888;
+        }
 
         .view-all {
             font-size: 0.75rem;
-            color: var(--muted);
+            color: #888;
             text-decoration: none;
         }
 
-        .view-all:hover { color: var(--accent); }
+        .view-all:hover {
+            color: #fff;
+        }
 
         .empty-card {
-            border: 1px solid var(--border);
-            background-color: var(--card-bg);
+            border: 1px solid #333;
+            background-color: #0a0a0a;
             padding: 2rem;
             text-align: center;
         }
 
         .empty-text {
             font-size: 0.875rem;
-            color: var(--muted);
+            color: #888;
         }
 
         .cursor-blink {
             display: inline-block;
             width: 7px;
             height: 1em;
-            background-color: var(--accent);
+            background-color: #fff;
             vertical-align: middle;
             margin-left: 2px;
             animation: blink 1s step-end infinite;
@@ -218,19 +194,33 @@
         }
 
         @media (min-width: 640px) {
-            .nav-inner { padding: 1rem 1.5rem; }
-            .card { padding: 1.5rem; }
-            main { padding: 2rem 1.5rem; }
+            .nav-inner {
+                padding: 1rem 1.5rem;
+            }
+            .card {
+                padding: 1.5rem;
+            }
+            main {
+                padding: 2rem 1.5rem;
+            }
         }
 
         @media (min-width: 1024px) {
-            .nav-inner { padding: 1rem 2rem; }
-            main { padding: 2rem 2rem; }
+            .nav-inner {
+                padding: 1rem 2rem;
+            }
+            main {
+                padding: 2rem 2rem;
+            }
         }
 
         @media (max-width: 639px) {
-            .nav-right { display: none; }
-            .mobile-toggle { display: flex; }
+            .nav-right {
+                display: none;
+            }
+            .mobile-toggle {
+                display: flex;
+            }
         }
     </style>
 </head>
@@ -247,7 +237,6 @@
             <div class="nav-right">
                 <a href="/writeups">writeups/</a>
                 <a href="/stats">stats/</a>
-                <button class="theme-toggle" onclick="toggleTheme()">[theme]</button>
                 <a href="{{ route('login') }}">[login]</a>
             </div>
         </div>
@@ -277,13 +266,5 @@
             </div>
         </section>
     </main>
-
-    <script>
-        function toggleTheme() {
-            var html = document.documentElement;
-            html.className = html.className === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('theme', html.className);
-        }
-    </script>
 </body>
 </html>
