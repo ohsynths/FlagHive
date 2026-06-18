@@ -2,10 +2,6 @@
 
 @section('title', 'FlagHive - writeups')
 
-@section('nav-right')
-    <a href="{{ route('login') }}">[login]</a>
-@endsection
-
 @section('styles')
     main {
         max-width: 100%;
@@ -72,8 +68,49 @@
     }
 
     .filter-bar select.sm { width: 140px; }
-
     .filter-bar select.md { width: 160px; }
+
+    .writeup-row {
+        border: 1px solid #333;
+        border-bottom: none;
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .writeup-row:last-child {
+        border-bottom: 1px solid #333;
+    }
+
+    .writeup-row:hover {
+        background-color: #0a0a0a;
+    }
+
+    .writeup-title {
+        font-size: 0.875rem;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .writeup-title:hover {
+        text-decoration: underline;
+    }
+
+    .writeup-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 0.75rem;
+        color: #555;
+    }
+
+    .writeup-meta span { white-space: nowrap; }
+
+    .writeup-meta .badge {
+        color: #aaa;
+    }
 
     .empty-card {
         border: 1px solid #333;
@@ -85,6 +122,30 @@
     .empty-card p {
         font-size: 0.875rem;
         color: #888;
+    }
+
+    .pagination {
+        margin-top: 1.5rem;
+        display: flex;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+        color: #888;
+    }
+
+    .pagination a, .pagination span {
+        color: #888;
+        text-decoration: none;
+        padding: 0.25rem 0.5rem;
+        border: 1px solid #333;
+    }
+
+    .pagination a:hover {
+        color: #fff;
+        border-color: #fff;
+    }
+
+    .filter-form {
+        display: contents;
     }
 
     @media (min-width: 640px) {
@@ -101,32 +162,50 @@
         <div class="card">
             <p class="card-header"><span class="dollar">$</span> ls -la writeups/</p>
             <h1 class="card-title cursor-blink">Writeups</h1>
-            <p class="card-sub">Total: <span style="color:#fff">0</span> writeups</p>
+            <p class="card-sub">Total: <span style="color:#fff">{{ $writeups->total() }}</span> writeups</p>
         </div>
 
-        <div class="filter-bar">
-            <input type="text" class="search" placeholder="$ grep -i &quot;&quot;">
-            <select class="sm">
-                <option>[category]</option>
-                <option>web</option>
-                <option>pwn</option>
-                <option>rev</option>
-                <option>crypto</option>
-                <option>forensics</option>
-                <option>misc</option>
-                <option>osint</option>
+        <form class="filter-bar" method="GET" action="{{ route('writeups') }}">
+            <input type="text" name="search" class="search" placeholder="$ grep -i &quot;&quot;" value="{{ request('search') }}">
+            <select name="category" class="sm" onchange="this.form.submit()">
+                <option value="">[category]</option>
+                @foreach ($categories as $cat)
+                    <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                @endforeach
             </select>
-            <select class="md">
-                <option>[ctf]</option>
+            <select name="ctf" class="md" onchange="this.form.submit()">
+                <option value="">[ctf]</option>
+                @foreach ($ctfs as $c)
+                    <option value="{{ $c->id }}" {{ request('ctf') == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
+                @endforeach
             </select>
-            <select class="sm">
-                <option>newest</option>
-                <option>oldest</option>
+            <select name="sort" class="sm" onchange="this.form.submit()">
+                <option value="newest" {{ request('sort', 'newest') == 'newest' ? 'selected' : '' }}>newest</option>
+                <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>oldest</option>
+                <option value="title" {{ request('sort') == 'title' ? 'selected' : '' }}>title</option>
             </select>
-        </div>
+        </form>
 
-        <div class="empty-card">
-            <p>No writeups yet</p>
-        </div>
+        @forelse ($writeups as $writeup)
+            <div class="writeup-row">
+                <a href="#" class="writeup-title">{{ $writeup->title }}</a>
+                <div class="writeup-meta">
+                    <span class="badge">{{ $writeup->category->name }}</span>
+                    <span class="badge">{{ $writeup->ctf->name }}</span>
+                    <span style="color:#fff">{{ $writeup->user->name }}</span>
+                    <span>{{ $writeup->created_at->format('Y-m-d') }}</span>
+                </div>
+            </div>
+        @empty
+            <div class="empty-card">
+                <p>No writeups yet</p>
+            </div>
+        @endforelse
+
+        @if ($writeups->hasPages())
+            <div class="pagination">
+                {{ $writeups->links() }}
+            </div>
+        @endif
     </main>
 @endsection

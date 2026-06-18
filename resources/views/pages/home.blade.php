@@ -2,10 +2,6 @@
 
 @section('title', 'FlagHive')
 
-@section('nav-right')
-    <a href="{{ route('login') }}">[login]</a>
-@endsection
-
 @section('styles')
     main {
         max-width: 100%;
@@ -68,6 +64,46 @@
 
     .view-all:hover { color: #fff; }
 
+    .writeup-row {
+        border: 1px solid #333;
+        border-bottom: none;
+        padding: 0.75rem 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        font-size: 0.875rem;
+    }
+
+    .writeup-row:last-child {
+        border-bottom: 1px solid #333;
+    }
+
+    .writeup-row:hover {
+        background-color: #0a0a0a;
+    }
+
+    .writeup-row a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .writeup-row a:hover {
+        text-decoration: underline;
+    }
+
+    .writeup-row .meta {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.75rem;
+        color: #555;
+    }
+
+    .writeup-row .meta .badge {
+        color: #888;
+    }
+
     .empty-card {
         border: 1px solid #333;
         background-color: #0a0a0a;
@@ -104,13 +140,25 @@
         <section>
             <div class="section-header">
                 <h2 class="section-title">
-                    <span class="dollar">$</span> ls -la writeups/ | tail -0
+                    <span class="dollar">$</span> ls -la writeups/ | tail -{{ $recent->count() }}
                 </h2>
                 <a class="view-all" href="{{ route('writeups') }}">[view all]</a>
             </div>
-            <div class="empty-card">
-                <p class="empty-text">No writeups yet</p>
-            </div>
+            @forelse ($recent as $w)
+                <div class="writeup-row">
+                    <a href="#">{{ $w->title }}</a>
+                    <div class="meta">
+                        <span class="badge">{{ $w->category->name }}</span>
+                        <span class="badge">{{ $w->ctf->name }}</span>
+                        <span style="color:#fff">{{ $w->user->name }}</span>
+                        <span>{{ $w->created_at->format('Y-m-d') }}</span>
+                    </div>
+                </div>
+            @empty
+                <div class="empty-card">
+                    <p class="empty-text">No writeups yet</p>
+                </div>
+            @endforelse
         </section>
     </main>
 @endsection

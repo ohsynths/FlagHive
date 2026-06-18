@@ -2,10 +2,6 @@
 
 @section('title', 'FlagHive - stats')
 
-@section('nav-right')
-    <a href="{{ route('login') }}">[login]</a>
-@endsection
-
 @section('styles')
     main {
         max-width: 100%;
@@ -115,23 +111,23 @@
         <div class="card">
             <p class="card-header"><span class="dollar">$</span> cat stats/overview</p>
             <h1 class="card-title cursor-blink">Statistics</h1>
-            <p class="card-sub">Overview of <span class="highlight">0</span> writeups across <span class="highlight">0</span> CTF events</p>
+            <p class="card-sub">Overview of <span class="highlight">{{ $totalWriteups }}</span> writeups across <span class="highlight">{{ $totalCtfs }}</span> CTF events</p>
         </div>
 
         <div class="stat-grid">
             <div class="stat-box">
                 <div class="stat-label"><span class="dollar">$</span> total_writeups</div>
-                <div class="stat-value">0</div>
+                <div class="stat-value">{{ $totalWriteups }}</div>
                 <div class="stat-detail">submissions</div>
             </div>
             <div class="stat-box">
                 <div class="stat-label"><span class="dollar">$</span> categories</div>
-                <div class="stat-value">0</div>
+                <div class="stat-value">{{ $totalCategories }}</div>
                 <div class="stat-detail">covered</div>
             </div>
             <div class="stat-box">
                 <div class="stat-label"><span class="dollar">$</span> ctf_events</div>
-                <div class="stat-value">0</div>
+                <div class="stat-value">{{ $totalCtfs }}</div>
                 <div class="stat-detail">participated</div>
             </div>
         </div>
@@ -151,7 +147,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td colspan="5" style="text-align:center;color:#555;padding:2rem">No writeups yet</td></tr>
+                        @forelse ($recent as $w)
+                            <tr>
+                                <td>{{ $w->created_at->format('Y-m-d') }}</td>
+                                <td>{{ $w->title }}</td>
+                                <td>{{ $w->ctf->name }}</td>
+                                <td>{{ $w->category->name }}</td>
+                                <td style="color:#fff">published</td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="5" style="text-align:center;color:#555;padding:2rem">No writeups yet</td></tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

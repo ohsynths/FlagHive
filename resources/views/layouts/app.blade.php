@@ -49,8 +49,18 @@
             text-decoration: none;
         }
 
-        .nav-right a:hover {
+        .nav-right a:hover,
+        .nav-right form button:hover {
             color: #fff;
+        }
+
+        .nav-right form button {
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: inherit;
+            color: #888;
+            cursor: pointer;
         }
 
         .cursor-blink::after {
@@ -86,7 +96,19 @@
             <div class="nav-right">
                 <a href="{{ route('writeups') }}">writeups/</a>
                 <a href="{{ route('stats') }}">stats/</a>
-                @yield('nav-right')
+                @auth
+                    <span style="color:#fff">{{ auth()->user()->name }}</span>
+                    <form method="POST" action="{{ route('logout') }}" style="display:inline">
+                        @csrf
+                        <button type="submit" style="background:none;border:none;font-family:inherit;font-size:inherit;color:#888;cursor:pointer">[logout]</button>
+                    </form>
+                @else
+                    @hasSection('nav-right')
+                        @yield('nav-right')
+                    @else
+                        <a href="{{ route('login') }}">[login]</a>
+                    @endif
+                @endauth
             </div>
         </div>
     </nav>

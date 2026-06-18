@@ -2,10 +2,6 @@
 
 @section('title', 'FlagHive - register')
 
-@section('nav-right')
-    <a href="{{ route('login') }}">[login]</a>
-@endsection
-
 @section('styles')
     main {
         flex: 1;

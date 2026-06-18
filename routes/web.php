@@ -1,57 +1,32 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\WriteupController;
+use App\Models\Category;
+use App\Models\Ctf;
+use App\Models\Writeup;
 
 Route::get('/', function () {
-    return view('pages.home');
+    $recent = Writeup::with(['category', 'ctf', 'user'])->latest()->take(5)->get();
+    return view('pages.home', compact('recent'));
 });
 
-Route::get('/writeups', function () {
-    return view('pages.writeups');
-})->name('writeups');
+Route::get('/writeups', [WriteupController::class, 'index'])->name('writeups');
 
 Route::get('/stats', function () {
-    return view('pages.stats');
+    $totalWriteups = Writeup::count();
+    $totalCategories = Category::count();
+    $totalCtfs = Ctf::count();
+    $recent = Writeup::with(['user', 'category', 'ctf'])->latest()->take(10)->get();
+
+    return view('pages.stats', compact('totalWriteups', 'totalCategories', 'totalCtfs', 'recent'));
 })->name('stats');
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::post('/login', function (Illuminate\Http\Request $request) {
-    $credentials = $request->validate([
-        'email' => ['required', 'email'],
-        'password' => ['required'],
-    ]);
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
 
-    if (auth()->attempt($credentials)) {
-        $request->session()->regenerate();
-        return redirect('/');
-    }
-
-    return back()->withErrors([
-        'email' => 'Invalid credentials.',
-    ]);
-});
-
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
-
-Route::post('/register', function (Illuminate\Http\Request $request) {
-    $data = $request->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'email', 'unique:users,email'],
-        'password' => ['required', 'confirmed', 'min:8'],
-    ]);
-
-    $user = \App\Models\User::create([
-        'name' => $data['name'],
-        'email' => $data['email'],
-        'password' => bcrypt($data['password']),
-    ]);
-
-    auth()->login($user);
-
-    return redirect('/');
-});
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
