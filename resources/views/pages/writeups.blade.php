@@ -161,7 +161,11 @@
     <main>
         <div class="card">
             <p class="card-header"><span class="dollar">$</span> ls -la writeups/</p>
-            <h1 class="card-title cursor-blink">Writeups</h1>
+            <h1 class="card-title">Writeups
+                @auth
+                    <a href="{{ route('writeups.create') }}" style="font-size:0.75rem;color:#888;text-decoration:none;margin-left:1rem">[new]</a>
+                @endauth
+            </h1>
             <p class="card-sub">Total: <span style="color:#fff">{{ $writeups->total() }}</span> writeups</p>
         </div>
 
@@ -173,12 +177,7 @@
                     <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                 @endforeach
             </select>
-            <select name="ctf" class="md" onchange="this.form.submit()">
-                <option value="">[ctf]</option>
-                @foreach ($ctfs as $c)
-                    <option value="{{ $c->id }}" {{ request('ctf') == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
-                @endforeach
-            </select>
+            <input type="text" name="ctf" class="search" style="min-width:180px;flex:0" placeholder="$ where ctf like" value="{{ request('ctf') }}">
             <select name="sort" class="sm" onchange="this.form.submit()">
                 <option value="newest" {{ request('sort', 'newest') == 'newest' ? 'selected' : '' }}>newest</option>
                 <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>oldest</option>
@@ -188,10 +187,10 @@
 
         @forelse ($writeups as $writeup)
             <div class="writeup-row">
-                <a href="#" class="writeup-title">{{ $writeup->title }}</a>
+                <a href="{{ route('writeups.show', $writeup) }}" class="writeup-title">{{ $writeup->title }}</a>
                 <div class="writeup-meta">
                     <span class="badge">{{ $writeup->category->name }}</span>
-                    <span class="badge">{{ $writeup->ctf->name }}</span>
+                    <span class="badge">{{ $writeup->ctf }}</span>
                     <span style="color:#fff">{{ $writeup->user->name }}</span>
                     <span>{{ $writeup->created_at->format('Y-m-d') }}</span>
                 </div>

@@ -97,6 +97,7 @@
                 <a href="{{ route('writeups') }}">writeups/</a>
                 <a href="{{ route('stats') }}">stats/</a>
                 @auth
+                    <a href="{{ route('writeups.create') }}" style="color:#888;text-decoration:none">[new]</a>
                     <a href="{{ route('profile') }}" style="color:#fff;text-decoration:none">{{ auth()->user()->name }}</a>
                     <form method="POST" action="{{ route('logout') }}" style="display:inline">
                         @csrf

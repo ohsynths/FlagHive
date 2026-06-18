@@ -151,7 +151,7 @@
                             <tr>
                                 <td>{{ $w->created_at->format('Y-m-d') }}</td>
                                 <td>{{ $w->title }}</td>
-                                <td>{{ $w->ctf->name }}</td>
+                                <td>{{ $w->ctf }}</td>
                                 <td>{{ $w->category->name }}</td>
                                 <td style="color:#fff">published</td>
                             </tr>

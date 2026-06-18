@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Writeup extends Model
 {
-    protected $fillable = ['user_id', 'category_id', 'ctf_id', 'title', 'slug', 'description', 'content'];
+    protected $fillable = ['user_id', 'category_id', 'ctf', 'title', 'slug', 'description', 'content'];
 
     public function user()
     {
@@ -16,10 +16,5 @@ class Writeup extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
-    }
-
-    public function ctf()
-    {
-        return $this->belongsTo(Ctf::class);
     }
 }

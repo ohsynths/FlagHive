@@ -205,14 +205,17 @@
             @error('avatar')
                 <p class="success" style="color:#888">{{ $message }}</p>
             @enderror
+            <div style="margin-top:1rem">
+                <a href="{{ route('writeups.create') }}" style="font-size:0.75rem;color:#888;text-decoration:none">[new writeup]</a>
+            </div>
         </div>
 
         @forelse ($writeups as $w)
             <div class="writeup-row">
-                <a href="#">{{ $w->title }}</a>
+                <a href="{{ route('writeups.show', $w) }}">{{ $w->title }}</a>
                 <div class="meta">
                     <span class="badge">{{ $w->category->name }}</span>
-                    <span class="badge">{{ $w->ctf->name }}</span>
+                    <span class="badge">{{ $w->ctf }}</span>
                     <span>{{ $w->created_at->format('Y-m-d') }}</span>
                 </div>
             </div>

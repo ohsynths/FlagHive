@@ -143,13 +143,16 @@
                     <span class="dollar">$</span> ls -la writeups/ | tail -{{ $recent->count() }}
                 </h2>
                 <a class="view-all" href="{{ route('writeups') }}">[view all]</a>
+                @auth
+                    <a class="view-all" href="{{ route('writeups.create') }}" style="margin-left:0.75rem">[new]</a>
+                @endauth
             </div>
             @forelse ($recent as $w)
                 <div class="writeup-row">
-                    <a href="#">{{ $w->title }}</a>
+                    <a href="{{ route('writeups.show', $w) }}">{{ $w->title }}</a>
                     <div class="meta">
                         <span class="badge">{{ $w->category->name }}</span>
-                        <span class="badge">{{ $w->ctf->name }}</span>
+                        <span class="badge">{{ $w->ctf }}</span>
                         <span style="color:#fff">{{ $w->user->name }}</span>
                         <span>{{ $w->created_at->format('Y-m-d') }}</span>
                     </div>

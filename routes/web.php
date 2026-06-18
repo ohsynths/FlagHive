@@ -6,21 +6,23 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WriteupController;
 use App\Models\Category;
-use App\Models\Ctf;
 use App\Models\Writeup;
 
 Route::get('/', function () {
-    $recent = Writeup::with(['category', 'ctf', 'user'])->latest()->take(5)->get();
+    $recent = Writeup::with(['category', 'user'])->latest()->take(5)->get();
     return view('pages.home', compact('recent'));
 });
 
 Route::get('/writeups', [WriteupController::class, 'index'])->name('writeups');
+Route::get('/writeups/create', [WriteupController::class, 'create'])->middleware('auth')->name('writeups.create');
+Route::post('/writeups', [WriteupController::class, 'store'])->middleware('auth')->name('writeups.store');
+Route::get('/writeups/{writeup}', [WriteupController::class, 'show'])->name('writeups.show');
 
 Route::get('/stats', function () {
     $totalWriteups = Writeup::count();
     $totalCategories = Category::count();
-    $totalCtfs = Ctf::count();
-    $recent = Writeup::with(['user', 'category', 'ctf'])->latest()->take(10)->get();
+    $totalCtfs = Writeup::distinct('ctf')->count('ctf');
+    $recent = Writeup::with(['user', 'category'])->latest()->take(10)->get();
 
     return view('pages.stats', compact('totalWriteups', 'totalCategories', 'totalCtfs', 'recent'));
 })->name('stats');
@@ -35,7 +37,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/profile', function () {
     $user = auth()->user();
-    $writeups = $user->writeups()->with(['category', 'ctf'])->latest()->paginate(20);
+    $writeups = $user->writeups()->with(['category'])->latest()->paginate(20);
     return view('pages.profile', compact('user', 'writeups'));
 })->middleware('auth')->name('profile');
 
