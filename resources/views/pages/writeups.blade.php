@@ -52,6 +52,9 @@
         font-family: inherit;
         font-size: 0.75rem;
         outline: none;
+    }
+
+    .filter-bar select {
         appearance: none;
         -webkit-appearance: none;
         cursor: pointer;
@@ -68,7 +71,6 @@
     }
 
     .filter-bar select.sm { width: 140px; }
-    .filter-bar select.md { width: 160px; }
 
     .writeup-row {
         border: 1px solid #333;
@@ -142,10 +144,6 @@
     .pagination a:hover {
         color: #fff;
         border-color: #fff;
-    }
-
-    .filter-form {
-        display: contents;
     }
 
     @media (min-width: 640px) {

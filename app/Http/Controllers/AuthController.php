@@ -11,7 +11,7 @@ class AuthController extends Controller
     public function showLogin()
     {
         if (Auth::check()) {
-            return redirect('/');
+            return redirect()->route('home');
         }
         return view('auth.login');
     }
@@ -25,7 +25,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect('/');
+            return redirect()->route('home');
         }
 
         return back()->withErrors([
@@ -36,7 +36,7 @@ class AuthController extends Controller
     public function showRegister()
     {
         if (Auth::check()) {
-            return redirect('/');
+            return redirect()->route('home');
         }
         return view('auth.register');
     }
@@ -57,7 +57,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect('/');
+        return redirect()->route('home');
     }
 
     public function logout(Request $request)
@@ -65,6 +65,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+        return redirect()->route('home');
     }
 }

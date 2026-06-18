@@ -130,10 +130,10 @@
         <div class="card">
             <p class="card-header"><span class="dollar">$</span> cat writeups/README</p>
             <h1 class="card-title">
-                <span class="primary cursor-blink">~/flaghive</span>
+                <span class="cursor-blink">~/flaghive</span>
             </h1>
             <p class="card-sub">
-                <span class="user">ohsynthz</span>@root:~/flaghive
+                <span class="user">{{ auth()->user()->name ?? 'ohsynthz' }}</span>@@root:~/flaghive
             </p>
         </div>
 

@@ -71,6 +71,12 @@ class WriteupController extends Controller
         $data['user_id'] = auth()->id();
         $data['slug'] = Str::slug($data['title']);
 
+        $base = $data['slug'];
+        $i = 1;
+        while (Writeup::where('slug', $data['slug'])->exists()) {
+            $data['slug'] = $base . '-' . $i++;
+        }
+
         $writeup = Writeup::create($data);
 
         return redirect()->route('writeups.show', $writeup);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,13 +16,17 @@
 
         .nav { border-bottom: 1px solid #333; }
 
+        .dollar { color: #fff; }
+        .cmd { color: #fff; }
+        .path { color: #fff; }
+
         .nav-inner {
             max-width: 100%;
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1rem 1rem;
+            padding: 1rem;
         }
 
         .nav-left {
@@ -47,6 +51,10 @@
         .nav-right a {
             color: #888;
             text-decoration: none;
+        }
+
+        .nav-right a.nav-user {
+            color: #fff;
         }
 
         .nav-right a:hover,
@@ -97,11 +105,11 @@
                 <a href="{{ route('writeups') }}">writeups/</a>
                 <a href="{{ route('stats') }}">stats/</a>
                 @auth
-                    <a href="{{ route('writeups.create') }}" style="color:#888;text-decoration:none">[new]</a>
-                    <a href="{{ route('profile') }}" style="color:#fff;text-decoration:none">{{ auth()->user()->name }}</a>
+                    <a href="{{ route('writeups.create') }}">[new]</a>
+                    <a href="{{ route('profile') }}" class="nav-user">{{ auth()->user()->name }}</a>
                     <form method="POST" action="{{ route('logout') }}" style="display:inline">
                         @csrf
-                        <button type="submit" style="background:none;border:none;font-family:inherit;font-size:inherit;color:#888;cursor:pointer">[logout]</button>
+                        <button type="submit">[logout]</button>
                     </form>
                 @else
                     @hasSection('nav-right')
