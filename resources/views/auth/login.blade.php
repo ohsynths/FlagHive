@@ -1,24 +1,51 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FlagHive - login</title>
+    <script>
+        (function() {
+            var t = localStorage.getItem('theme');
+            if (t) {
+                document.documentElement.className = t;
+            } else {
+                document.documentElement.className =
+                    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+        })();
+    </script>
     <style>
+        :root {
+            --bg: #f5f5f5;
+            --card-bg: #fff;
+            --border: #ddd;
+            --text: #222;
+            --muted: #999;
+            --accent: #000;
+        }
+
+        .dark {
+            --bg: #000;
+            --card-bg: #0a0a0a;
+            --border: #333;
+            --text: #fff;
+            --muted: #888;
+            --accent: #fff;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             min-height: 100vh;
-            background-color: #000;
+            background-color: var(--bg);
             font-family: 'Courier New', Courier, monospace;
             -webkit-font-smoothing: antialiased;
             display: flex;
             flex-direction: column;
         }
 
-        .nav {
-            border-bottom: 1px solid #333;
-        }
+        .nav { border-bottom: 1px solid var(--border); }
 
         .nav-inner {
             max-width: 100%;
@@ -37,27 +64,42 @@
             font-size: 0.875rem;
             font-weight: bold;
             letter-spacing: 0.05em;
-            color: #fff;
+            color: var(--text);
         }
 
-        .nav-left .dollar { color: #fff; }
-        .nav-left .cmd { color: #fff; }
-        .nav-left .path { color: #fff; }
+        .nav-left .dollar { color: var(--accent); }
+        .nav-left .cmd { color: var(--accent); }
+        .nav-left .path { color: var(--text); }
 
         .nav-right {
             display: flex;
             align-items: center;
             gap: 1.25rem;
             font-size: 0.875rem;
-            color: #888;
+            color: var(--muted);
         }
 
         .nav-right a {
-            color: #888;
+            color: var(--muted);
             text-decoration: none;
         }
 
-        .nav-right a:hover { color: #fff; }
+        .nav-right a:hover { color: var(--accent); }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.75rem;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 2px 6px;
+        }
+
+        .theme-toggle:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
 
         main {
             flex: 1;
@@ -68,35 +110,33 @@
         }
 
         .auth-card {
-            border: 1px solid #333;
-            background-color: #0a0a0a;
+            border: 1px solid var(--border);
+            background-color: var(--card-bg);
             width: 100%;
             max-width: 400px;
             padding: 2rem;
         }
 
         .auth-title {
-            color: #fff;
+            color: var(--text);
             font-size: 1.2rem;
             font-weight: 400;
             margin-bottom: 0.5rem;
         }
 
         .auth-header {
-            color: #888;
+            color: var(--muted);
             font-size: 0.75rem;
             margin-bottom: 1.5rem;
         }
 
-        .auth-header .dollar { color: #fff; }
+        .auth-header .dollar { color: var(--accent); }
 
-        .form-group {
-            margin-bottom: 1rem;
-        }
+        .form-group { margin-bottom: 1rem; }
 
         .form-group label {
             display: block;
-            color: #888;
+            color: var(--muted);
             font-size: 0.8rem;
             margin-bottom: 0.4rem;
         }
@@ -104,38 +144,33 @@
         .form-group input {
             width: 100%;
             padding: 0.6rem 0.75rem;
-            background: #000;
-            border: 1px solid #333;
-            color: #fff;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
             font-family: inherit;
             font-size: 0.875rem;
             outline: none;
         }
 
-        .form-group input:focus {
-            border-color: #fff;
-        }
+        .form-group input:focus { border-color: var(--accent); }
 
         .error-box {
-            border: 1px solid #333;
-            background-color: #0a0a0a;
+            border: 1px solid var(--border);
+            background-color: var(--card-bg);
             padding: 0.75rem;
             margin-bottom: 1rem;
-            color: #888;
+            color: var(--muted);
             font-size: 0.8rem;
         }
 
-        .error-box .error-title {
-            color: #fff;
-            margin-bottom: 0.25rem;
-        }
+        .error-box .error-title { color: var(--text); margin-bottom: 0.25rem; }
 
         .btn {
             width: 100%;
             padding: 0.6rem;
             background: none;
-            border: 1px solid #fff;
-            color: #fff;
+            border: 1px solid var(--accent);
+            color: var(--accent);
             font-family: inherit;
             font-size: 0.875rem;
             cursor: pointer;
@@ -143,31 +178,29 @@
         }
 
         .btn:hover {
-            background: #fff;
-            color: #000;
+            background: var(--accent);
+            color: var(--bg);
         }
 
         .auth-footer {
-            color: #888;
+            color: var(--muted);
             font-size: 0.8rem;
             margin-top: 1rem;
             text-align: center;
         }
 
         .auth-footer a {
-            color: #fff;
+            color: var(--text);
             text-decoration: none;
         }
 
-        .auth-footer a:hover {
-            text-decoration: underline;
-        }
+        .auth-footer a:hover { text-decoration: underline; }
 
         .cursor-blink {
             display: inline-block;
             width: 7px;
             height: 1em;
-            background-color: #fff;
+            background-color: var(--accent);
             vertical-align: middle;
             margin-left: 2px;
             animation: blink 1s step-end infinite;
@@ -178,12 +211,8 @@
             50% { opacity: 0; }
         }
 
-        @media (min-width: 640px) {
-            .nav-inner { padding: 1rem 1.5rem; }
-        }
-        @media (min-width: 1024px) {
-            .nav-inner { padding: 1rem 2rem; }
-        }
+        @media (min-width: 640px) { .nav-inner { padding: 1rem 1.5rem; } }
+        @media (min-width: 1024px) { .nav-inner { padding: 1rem 2rem; } }
     </style>
 </head>
 <body>
@@ -197,6 +226,7 @@
             <div class="nav-right">
                 <a href="/writeups">writeups/</a>
                 <a href="/stats">stats/</a>
+                <button class="theme-toggle" onclick="toggleTheme()">[theme]</button>
                 <a href="{{ route('register') }}">[register]</a>
             </div>
         </div>
@@ -237,5 +267,13 @@
             </div>
         </div>
     </main>
+
+    <script>
+        function toggleTheme() {
+            var html = document.documentElement;
+            html.className = html.className === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', html.className);
+        }
+    </script>
 </body>
 </html>
