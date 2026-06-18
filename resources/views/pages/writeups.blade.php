@@ -161,13 +161,10 @@
             color: #fff;
         }
 
-        .cursor-blink {
-            display: inline-block;
-            width: 7px;
-            height: 1em;
-            background-color: #fff;
-            vertical-align: middle;
-            margin-left: 2px;
+        .cursor-blink::after {
+            content: '';
+            display: inline;
+            border-right: 7px solid #fff;
             animation: blink 1s step-end infinite;
         }
 
@@ -193,7 +190,7 @@
             <a class="nav-left" href="/">
                 <span class="dollar">$</span>
                 <span class="cmd">cd</span>
-                <span class="path">~/flaghive</span>
+                <span class="path cursor-blink">~/flaghive</span>
             </a>
             <div class="nav-right">
                 <a href="{{ route('writeups') }}">writeups/</a>
@@ -206,7 +203,7 @@
     <main>
         <div class="card">
             <p class="card-header"><span class="dollar">$</span> ls -la writeups/</p>
-            <h1 class="card-title">Writeups<span class="cursor-blink"></span></h1>
+            <h1 class="card-title cursor-blink">Writeups</h1>
             <p class="card-sub">Total: <span class="highlight" style="color:#fff">0</span> writeups</p>
         </div>
 

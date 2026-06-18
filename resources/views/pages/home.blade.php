@@ -178,13 +178,10 @@
             color: #888;
         }
 
-        .cursor-blink {
-            display: inline-block;
-            width: 7px;
-            height: 1em;
-            background-color: #fff;
-            vertical-align: middle;
-            margin-left: 2px;
+        .cursor-blink::after {
+            content: '';
+            display: inline;
+            border-right: 7px solid #fff;
             animation: blink 1s step-end infinite;
         }
 
@@ -230,8 +227,7 @@
             <a class="nav-left" href="/">
                 <span class="dollar">$</span>
                 <span class="cmd">cd</span>
-                <span class="path">~/flaghive</span>
-                <span class="cursor-blink"></span>
+                <span class="path cursor-blink">~/flaghive</span>
             </a>
             <button class="mobile-toggle" aria-label="Toggle menu">=</button>
             <div class="nav-right">
@@ -246,8 +242,7 @@
         <div class="card">
             <p class="card-header"><span class="dollar">$</span> cat writeups/README</p>
             <h1 class="card-title">
-                <span class="primary">~/flaghive</span>
-                <span class="cursor-blink"></span>
+                <span class="primary cursor-blink">~/flaghive</span>
             </h1>
             <p class="card-sub">
                 <span class="user">ohsynthz</span>@root:~/flaghive
