@@ -161,23 +161,19 @@
     <main>
         <div class="card">
             <p class="card-header"><span class="dollar">$</span> ls -la writeups/</p>
-            <h1 class="card-title">Writeups
-                @auth
-                    <a href="{{ route('writeups.create') }}" style="font-size:0.75rem;color:#888;text-decoration:none;margin-left:1rem">[new]</a>
-                @endauth
-            </h1>
+            <h1 class="card-title cursor-blink">Writeups</h1>
             <p class="card-sub">Total: <span style="color:#fff">{{ $writeups->total() }}</span> writeups</p>
         </div>
 
         <form class="filter-bar" method="GET" action="{{ route('writeups') }}">
-            <input type="text" name="search" class="search" placeholder="$ grep -i &quot;&quot;" value="{{ request('search') }}">
+            <input type="text" name="search" class="search" placeholder="$ grep -i &quot;&quot;" value="{{ request('search') }}" onchange="this.form.submit()" onkeydown="if(event.key==='Enter')this.form.submit()">
             <select name="category" class="sm" onchange="this.form.submit()">
                 <option value="">[category]</option>
                 @foreach ($categories as $cat)
                     <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                 @endforeach
             </select>
-            <input type="text" name="ctf" class="search" style="min-width:180px;flex:0" placeholder="$ where ctf like" value="{{ request('ctf') }}">
+            <input type="text" name="ctf" class="search" style="min-width:180px;flex:0" placeholder="$ where ctf like" value="{{ request('ctf') }}" onchange="this.form.submit()" onkeydown="if(event.key==='Enter')this.form.submit()">
             <select name="sort" class="sm" onchange="this.form.submit()">
                 <option value="newest" {{ request('sort', 'newest') == 'newest' ? 'selected' : '' }}>newest</option>
                 <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>oldest</option>
