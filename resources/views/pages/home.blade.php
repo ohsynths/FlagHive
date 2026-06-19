@@ -133,7 +133,7 @@
                 <span class="cursor-blink">~/flaghive</span>
             </h1>
             <p class="card-sub">
-                <span class="user">{{ auth()->user()->name ?? 'ohsynthz' }}</span>@@root:~/flaghive
+                <span class="user">{{ auth()->user()->name ?? 'root' }}</span>@@root:~/flaghive
             </p>
         </div>
 
