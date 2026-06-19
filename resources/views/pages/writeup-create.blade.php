@@ -112,6 +112,7 @@
         align-items: center;
         gap: 0.75rem;
         margin-bottom: 0.75rem;
+        margin-top: 0.5rem;
     }
 
     .file-upload input[type="file"] {
@@ -124,6 +125,7 @@
     .file-upload label {
         font-size: 0.75rem;
         color: #555;
+        padding-top: 0.15rem;
     }
 
     .error {
