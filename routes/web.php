@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\WriteupController;
@@ -28,4 +29,11 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [PageController::class, 'profile'])->name('profile');
     Route::post('/profile/avatar', [PageController::class, 'updateAvatar'])->name('profile.avatar');
+});
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::get('/writeups', [AdminController::class, 'writeups'])->name('writeups');
+    Route::get('/logs', [AdminController::class, 'logs'])->name('logs');
 });

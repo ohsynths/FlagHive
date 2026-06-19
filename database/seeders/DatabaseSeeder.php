@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $user = User::factory()->create([
             'name' => 'ohsynthz',
             'email' => 'ohsynthz@example.com',
+            'is_admin' => true,
         ]);
 
         $categories = collect([

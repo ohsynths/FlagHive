@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\Writeup;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -79,6 +80,14 @@ class WriteupController extends Controller
 
         $writeup = Writeup::create($data);
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'writeup.created',
+            'description' => "Created writeup \"{$writeup->title}\"",
+            'subject_id' => $writeup->id,
+            'subject_type' => Writeup::class,
+        ]);
+
         return redirect()->route('writeups.show', $writeup);
     }
 
@@ -87,6 +96,12 @@ class WriteupController extends Controller
         if ($writeup->user_id !== auth()->id()) {
             abort(403);
         }
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'writeup.deleted',
+            'description' => "Deleted writeup \"{$writeup->title}\"",
+        ]);
 
         $writeup->delete();
 

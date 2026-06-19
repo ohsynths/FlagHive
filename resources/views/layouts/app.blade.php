@@ -105,6 +105,9 @@
                 <a href="{{ route('writeups') }}">writeups/</a>
                 <a href="{{ route('stats') }}">stats/</a>
                 @auth
+                    @if (auth()->user()->is_admin)
+                        <a href="{{ route('admin.dashboard') }}">[admin]</a>
+                    @endif
                     <a href="{{ route('writeups.create') }}">[new]</a>
                     <a href="{{ route('profile') }}" class="nav-user">{{ auth()->user()->name }}</a>
                     <form method="POST" action="{{ route('logout') }}" style="display:inline">
@@ -112,11 +115,7 @@
                         <button type="submit">[logout]</button>
                     </form>
                 @else
-                    @hasSection('nav-right')
-                        @yield('nav-right')
-                    @else
-                        <a href="{{ route('login') }}">[login]</a>
-                    @endif
+                    <a href="{{ route('login') }}">[login]</a>
                 @endauth
             </div>
         </div>
