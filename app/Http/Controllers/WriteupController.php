@@ -52,6 +52,44 @@ class WriteupController extends Controller
         return view('pages.writeup-show', compact('writeup', 'html'));
     }
 
+    public function edit(Writeup $writeup)
+    {
+        if ($writeup->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $categories = Category::orderBy('name')->get();
+
+        return view('pages.writeup-edit', compact('writeup', 'categories'));
+    }
+
+    public function update(Request $request, Writeup $writeup)
+    {
+        if ($writeup->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'category_id' => ['required', 'exists:categories,id'],
+            'ctf' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:500'],
+            'content' => ['required', 'string'],
+        ]);
+
+        $writeup->update($data);
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'writeup.updated',
+            'description' => "Updated writeup \"{$writeup->title}\"",
+            'subject_id' => $writeup->id,
+            'subject_type' => Writeup::class,
+        ]);
+
+        return redirect()->route('writeups.show', $writeup)->with('success', 'Writeup updated.');
+    }
+
     public function create()
     {
         $categories = Category::orderBy('name')->get();

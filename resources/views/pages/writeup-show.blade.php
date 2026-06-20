@@ -254,11 +254,14 @@
 
             @auth
                 @if (auth()->user()->id === $writeup->user_id)
-                    <form class="delete-form" method="POST" action="{{ route('writeups.destroy', $writeup) }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" onclick="showDeleteModal()">[delete]</button>
-                    </form>
+                    <div style="display:flex;gap:0.75rem;margin-top:1rem">
+                        <a href="{{ route('writeups.edit', $writeup) }}" style="background:none;border:1px solid #333;color:#888;padding:0.35rem 0.75rem;font-family:inherit;font-size:0.75rem;cursor:pointer;text-decoration:none">[edit]</a>
+                        <form class="delete-form" method="POST" action="{{ route('writeups.destroy', $writeup) }}" style="margin:0">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" onclick="showDeleteModal()">[delete]</button>
+                        </form>
+                    </div>
                 @endif
             @endauth
         </div>

@@ -13,6 +13,8 @@ Route::prefix('writeups')->group(function () {
     Route::get('/create', [WriteupController::class, 'create'])->middleware('auth')->name('writeups.create');
     Route::post('/', [WriteupController::class, 'store'])->middleware('auth')->name('writeups.store');
     Route::get('/{writeup}', [WriteupController::class, 'show'])->name('writeups.show');
+    Route::get('/{writeup}/edit', [WriteupController::class, 'edit'])->middleware('auth')->name('writeups.edit');
+    Route::put('/{writeup}', [WriteupController::class, 'update'])->middleware('auth')->name('writeups.update');
     Route::delete('/{writeup}', [WriteupController::class, 'destroy'])->middleware('auth')->name('writeups.destroy');
 });
 
