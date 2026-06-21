@@ -100,29 +100,31 @@
 
     .password-wrapper {
         position: relative;
+        display: flex;
+        align-items: stretch;
     }
 
     .password-wrapper input {
-        padding-right: 3.5rem;
+        flex: 1;
+        min-width: 0;
+        border-right: none;
     }
 
     .eye-toggle {
-        position: absolute;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        background: none;
-        border: none;
-        border-left: 1px solid #333;
+        background: #000;
+        border: 1px solid #333;
+        border-left: none;
         color: #888;
         font-family: inherit;
         font-size: 0.7rem;
         padding: 0 0.6rem;
         cursor: pointer;
+        white-space: nowrap;
     }
 
     .eye-toggle:hover {
         color: #fff;
+        border-color: #fff;
     }
 @endsection
 
