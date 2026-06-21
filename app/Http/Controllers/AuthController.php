@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ActivityLog;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -66,6 +67,8 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
 
+        event(new Registered($user));
+
         Auth::login($user);
 
         ActivityLog::create([
@@ -74,7 +77,7 @@ class AuthController extends Controller
             'description' => "Registered as \"{$user->name}\"",
         ]);
 
-        return redirect()->route('home');
+        return redirect()->route('verification.notice');
     }
 
     public function logout(Request $request)
@@ -96,16 +99,12 @@ class AuthController extends Controller
     public function sendResetLink(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'email', 'exists:users,email'],
+            'email' => ['required', 'email'],
         ]);
 
-        $status = Password::sendResetLink($request->only('email'));
+        Password::sendResetLink($request->only('email'));
 
-        if ($status === Password::RESET_LINK_SENT) {
-            return back()->with('success', 'Password reset link sent to your email.');
-        }
-
-        return back()->withErrors(['email' => 'Unable to send reset link.']);
+        return back()->with('success', 'If that email is registered, a password reset link has been sent.');
     }
 
     public function showResetPassword($token)

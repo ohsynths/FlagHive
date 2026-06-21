@@ -54,9 +54,7 @@ class WriteupController extends Controller
 
     public function edit(Writeup $writeup)
     {
-        if ($writeup->user_id !== auth()->id()) {
-            abort(403);
-        }
+        $this->authorize('update', $writeup);
 
         $categories = Category::orderBy('name')->get();
 
@@ -65,9 +63,7 @@ class WriteupController extends Controller
 
     public function update(Request $request, Writeup $writeup)
     {
-        if ($writeup->user_id !== auth()->id()) {
-            abort(403);
-        }
+        $this->authorize('update', $writeup);
 
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -131,9 +127,7 @@ class WriteupController extends Controller
 
     public function destroy(Writeup $writeup)
     {
-        if ($writeup->user_id !== auth()->id()) {
-            abort(403);
-        }
+        $this->authorize('delete', $writeup);
 
         ActivityLog::create([
             'user_id' => auth()->id(),

@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\ActivityLog;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
@@ -11,12 +13,12 @@ Route::get('/u/{user}', [PageController::class, 'publicProfile'])->name('user.pu
 
 Route::prefix('writeups')->group(function () {
     Route::get('/', [WriteupController::class, 'index'])->name('writeups');
-    Route::get('/create', [WriteupController::class, 'create'])->middleware('auth')->name('writeups.create');
-    Route::post('/', [WriteupController::class, 'store'])->middleware('auth')->name('writeups.store');
+    Route::get('/create', [WriteupController::class, 'create'])->middleware(['auth', 'verified'])->name('writeups.create');
+    Route::post('/', [WriteupController::class, 'store'])->middleware(['auth', 'verified'])->name('writeups.store');
     Route::get('/{writeup}', [WriteupController::class, 'show'])->name('writeups.show');
-    Route::get('/{writeup}/edit', [WriteupController::class, 'edit'])->middleware('auth')->name('writeups.edit');
-    Route::put('/{writeup}', [WriteupController::class, 'update'])->middleware('auth')->name('writeups.update');
-    Route::delete('/{writeup}', [WriteupController::class, 'destroy'])->middleware('auth')->name('writeups.destroy');
+    Route::get('/{writeup}/edit', [WriteupController::class, 'edit'])->middleware(['auth', 'verified'])->name('writeups.edit');
+    Route::put('/{writeup}', [WriteupController::class, 'update'])->middleware(['auth', 'verified'])->name('writeups.update');
+    Route::delete('/{writeup}', [WriteupController::class, 'destroy'])->middleware(['auth', 'verified'])->name('writeups.destroy');
 });
 
 Route::get('/stats', [PageController::class, 'stats'])->name('stats');
@@ -47,3 +49,31 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/users/{user}/unban', [AdminController::class, 'unbanUser'])->name('users.unban');
     Route::delete('/writeups/{writeup}', [AdminController::class, 'deleteWriteup'])->name('writeups.delete');
 });
+
+Route::get('/email/verify', function () {
+    if (auth()->user()?->hasVerifiedEmail()) {
+        return redirect()->route('home');
+    }
+    return view('auth.verify-notice');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    ActivityLog::create([
+        'user_id' => auth()->id(),
+        'action' => 'user.verified',
+        'description' => 'Verified email address',
+    ]);
+
+    return redirect()->route('verification.success');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function () {
+    auth()->user()->sendEmailVerificationNotification();
+    return back()->with('resent', true);
+})->middleware(['auth', 'throttle:3,1'])->name('verification.send');
+
+Route::get('/email/verify-success', function () {
+    return view('auth.verify-success');
+})->name('verification.success');
