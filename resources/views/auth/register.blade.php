@@ -97,6 +97,33 @@
     }
 
     .auth-footer a:hover { text-decoration: underline; }
+
+    .password-wrapper {
+        position: relative;
+    }
+
+    .password-wrapper input {
+        padding-right: 3.5rem;
+    }
+
+    .eye-toggle {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: none;
+        border: none;
+        border-left: 1px solid #333;
+        color: #888;
+        font-family: inherit;
+        font-size: 0.7rem;
+        padding: 0 0.6rem;
+        cursor: pointer;
+    }
+
+    .eye-toggle:hover {
+        color: #fff;
+    }
 @endsection
 
 @section('content')
@@ -129,7 +156,10 @@
 
                 <div class="form-group">
                     <label for="password">password</label>
-                    <input id="password" type="password" name="password" required>
+                    <div class="password-wrapper">
+                        <input id="password" type="password" name="password" required>
+                        <button type="button" class="eye-toggle" onclick="togglePass(this)">[show]</button>
+                    </div>
                 </div>
 
                 <div class="form-group" style="font-size:0.75rem;color:#555;margin-bottom:0.75rem">
@@ -138,7 +168,10 @@
 
                 <div class="form-group">
                     <label for="password_confirmation">confirm password</label>
-                    <input id="password_confirmation" type="password" name="password_confirmation" required>
+                    <div class="password-wrapper">
+                        <input id="password_confirmation" type="password" name="password_confirmation" required>
+                        <button type="button" class="eye-toggle" onclick="togglePass(this)">[show]</button>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn">[create account]</button>
@@ -149,4 +182,13 @@
             </div>
         </div>
     </main>
+
+    <script>
+        function togglePass(btn) {
+            const input = btn.parentElement.querySelector('input');
+            const isPass = input.type === 'password';
+            input.type = isPass ? 'text' : 'password';
+            btn.textContent = isPass ? '[hide]' : '[show]';
+        }
+    </script>
 @endsection
