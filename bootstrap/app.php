@@ -17,6 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'check.banned' => \App\Http\Middleware\CheckBanned::class,
             'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         ]);
+
+        $middleware->prepend(\App\Http\Middleware\SecurityHeaders::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
