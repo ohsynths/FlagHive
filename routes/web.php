@@ -28,7 +28,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/logout', 'logout')->name('logout');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'check.banned'])->group(function () {
     Route::get('/profile', [PageController::class, 'profile'])->name('profile');
     Route::post('/profile/avatar', [PageController::class, 'updateAvatar'])->name('profile.avatar');
 });
@@ -38,4 +38,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/users', [AdminController::class, 'users'])->name('users');
     Route::get('/writeups', [AdminController::class, 'writeups'])->name('writeups');
     Route::get('/logs', [AdminController::class, 'logs'])->name('logs');
+    Route::post('/users/{user}/ban', [AdminController::class, 'banUser'])->name('users.ban');
+    Route::post('/users/{user}/unban', [AdminController::class, 'unbanUser'])->name('users.unban');
+    Route::delete('/writeups/{writeup}', [AdminController::class, 'deleteWriteup'])->name('writeups.delete');
 });

@@ -109,6 +109,7 @@
                         <th>CATEGORY</th>
                         <th>CTF</th>
                         <th>DATE</th>
+                        <th>ACTION</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -119,6 +120,13 @@
                             <td>{{ $w->category->name }}</td>
                             <td>{{ $w->ctf }}</td>
                             <td>{{ $w->created_at->format('Y-m-d') }}</td>
+                            <td>
+                                <form method="POST" action="{{ route('admin.writeups.delete', $w) }}" style="display:inline" onsubmit="return confirm('Delete this writeup?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" style="background:none;border:1px solid #333;color:#888;padding:0.2rem 0.5rem;font-family:inherit;font-size:0.7rem;cursor:pointer">[delete]</button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

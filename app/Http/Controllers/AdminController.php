@@ -59,4 +59,54 @@ class AdminController extends Controller
 
         return view('admin.logs', compact('logs', 'users', 'actions'));
     }
+
+    public function banUser(User $user)
+    {
+        if ($user->is_admin && $user->id !== auth()->id()) {
+            return back()->withErrors(['Cannot ban another admin.']);
+        }
+
+        $user->update(['banned_at' => now()]);
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'user.banned',
+            'description' => "Banned user \"{$user->name}\"",
+            'subject_id' => $user->id,
+            'subject_type' => User::class,
+        ]);
+
+        return back()->with('success', "User \"{$user->name}\" banned.");
+    }
+
+    public function unbanUser(User $user)
+    {
+        $user->update(['banned_at' => null]);
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'user.unbanned',
+            'description' => "Unbanned user \"{$user->name}\"",
+            'subject_id' => $user->id,
+            'subject_type' => User::class,
+        ]);
+
+        return back()->with('success', "User \"{$user->name}\" unbanned.");
+    }
+
+    public function deleteWriteup(Writeup $writeup)
+    {
+        $title = $writeup->title;
+        $author = $writeup->user->name;
+
+        $writeup->delete();
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'writeup.force-deleted',
+            'description' => "Admin deleted writeup \"{$title}\" by {$author}",
+        ]);
+
+        return back()->with('success', 'Writeup deleted.');
+    }
 }

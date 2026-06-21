@@ -109,7 +109,9 @@
                         <th>EMAIL</th>
                         <th>WRITEUPS</th>
                         <th>ADMIN</th>
+                        <th>STATUS</th>
                         <th>JOINED</th>
+                        <th>ACTION</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -120,7 +122,25 @@
                             <td>{{ $u->email }}</td>
                             <td>{{ $u->writeups_count }}</td>
                             <td>{{ $u->is_admin ? 'yes' : '-' }}</td>
+                            <td>{{ $u->isBanned() ? 'banned' : 'active' }}</td>
                             <td>{{ $u->created_at->format('Y-m-d') }}</td>
+                            <td>
+                                @if ($u->id !== auth()->id())
+                                    @if ($u->isBanned())
+                                        <form method="POST" action="{{ route('admin.users.unban', $u) }}" style="display:inline">
+                                            @csrf
+                                            <button type="submit" style="background:none;border:1px solid #333;color:#888;padding:0.2rem 0.5rem;font-family:inherit;font-size:0.7rem;cursor:pointer">[unban]</button>
+                                        </form>
+                                    @else
+                                        <form method="POST" action="{{ route('admin.users.ban', $u) }}" style="display:inline">
+                                            @csrf
+                                            <button type="submit" style="background:none;border:1px solid #333;color:#888;padding:0.2rem 0.5rem;font-family:inherit;font-size:0.7rem;cursor:pointer">[ban]</button>
+                                        </form>
+                                    @endif
+                                @else
+                                    <span style="color:#555;font-size:0.7rem">—</span>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
