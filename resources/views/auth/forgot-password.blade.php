@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'FlagHive - login')
+@section('title', 'FlagHive - forgot password')
 
 @section('styles')
     main {
@@ -84,6 +84,15 @@
         color: #000;
     }
 
+    .success-box {
+        border: 1px solid #333;
+        background-color: #0a0a0a;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        color: #fff;
+        font-size: 0.8rem;
+    }
+
     .auth-footer {
         color: #888;
         font-size: 0.8rem;
@@ -102,19 +111,23 @@
 @section('content')
     <main>
         <div class="auth-card">
-            <p class="auth-header"><span class="dollar">$</span> login</p>
-            <h1 class="auth-title cursor-blink">Authentication required</h1>
+            <p class="auth-header"><span class="dollar">$</span> recover password</p>
+            <h1 class="auth-title cursor-blink">Reset your password</h1>
 
-            @if ($errors->any())
-            <div class="error-box">
-                <div class="error-title">Errors:</div>
-                @foreach ($errors->all() as $error)
-                    <div>{{ $error }}</div>
-                @endforeach
-            </div>
+            @if (session('success'))
+                <div class="success-box">{{ session('success') }}</div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}">
+            @if ($errors->any())
+                <div class="error-box">
+                    <div class="error-title">Errors:</div>
+                    @foreach ($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                    @endforeach
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('password.email') }}">
                 @csrf
 
                 <div class="form-group">
@@ -122,20 +135,11 @@
                     <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
                 </div>
 
-                <div class="form-group">
-                    <label for="password">password</label>
-                    <input id="password" type="password" name="password" required>
-                </div>
-
-                <button type="submit" class="btn">[authenticate]</button>
+                <button type="submit" class="btn">[send reset link]</button>
             </form>
 
-            <div class="auth-footer" style="margin-top:0.5rem">
-                <a href="{{ route('password.request') }}">[forgot password?]</a>
-            </div>
-
             <div class="auth-footer">
-                No account? <a href="{{ route('register') }}">register</a>
+                <a href="{{ route('login') }}">[back to login]</a>
             </div>
         </div>
     </main>

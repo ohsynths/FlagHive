@@ -10,6 +10,7 @@
         body {
             min-height: 100vh;
             background-color: #000;
+            color: #ccc;
             font-family: 'Courier New', Courier, monospace;
             -webkit-font-smoothing: antialiased;
         }

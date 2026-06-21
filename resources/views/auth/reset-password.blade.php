@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'FlagHive - login')
+@section('title', 'FlagHive - reset password')
 
 @section('styles')
     main {
@@ -102,20 +102,21 @@
 @section('content')
     <main>
         <div class="auth-card">
-            <p class="auth-header"><span class="dollar">$</span> login</p>
-            <h1 class="auth-title cursor-blink">Authentication required</h1>
+            <p class="auth-header"><span class="dollar">$</span> reset password</p>
+            <h1 class="auth-title cursor-blink">Set new password</h1>
 
             @if ($errors->any())
-            <div class="error-box">
-                <div class="error-title">Errors:</div>
-                @foreach ($errors->all() as $error)
-                    <div>{{ $error }}</div>
-                @endforeach
-            </div>
+                <div class="error-box">
+                    <div class="error-title">Errors:</div>
+                    @foreach ($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                    @endforeach
+                </div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('password.update') }}">
                 @csrf
+                <input type="hidden" name="token" value="{{ $token }}">
 
                 <div class="form-group">
                     <label for="email">email</label>
@@ -123,19 +124,20 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password">password</label>
+                    <label for="password">new password</label>
                     <input id="password" type="password" name="password" required>
                 </div>
 
-                <button type="submit" class="btn">[authenticate]</button>
+                <div class="form-group">
+                    <label for="password_confirmation">confirm password</label>
+                    <input id="password_confirmation" type="password" name="password_confirmation" required>
+                </div>
+
+                <button type="submit" class="btn">[reset password]</button>
             </form>
 
-            <div class="auth-footer" style="margin-top:0.5rem">
-                <a href="{{ route('password.request') }}">[forgot password?]</a>
-            </div>
-
             <div class="auth-footer">
-                No account? <a href="{{ route('register') }}">register</a>
+                <a href="{{ route('login') }}">[back to login]</a>
             </div>
         </div>
     </main>

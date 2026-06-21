@@ -47,7 +47,7 @@ class WriteupController extends Controller
     public function show(Writeup $writeup)
     {
         $writeup->load(['user', 'category']);
-        $html = Str::markdown($writeup->content);
+        $html = Str::markdown($writeup->content, ['html_input' => 'strip']);
 
         return view('pages.writeup-show', compact('writeup', 'html'));
     }

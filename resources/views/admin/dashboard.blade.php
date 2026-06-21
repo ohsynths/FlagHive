@@ -85,7 +85,7 @@
 
     .row .meta {
         font-size: 0.75rem;
-        color: #555;
+        color: #888;
         display: flex;
         gap: 0.75rem;
     }
