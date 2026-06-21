@@ -185,7 +185,7 @@
                 <div class="writeup-meta">
                     <span class="badge">{{ $writeup->category->name }}</span>
                     <span class="badge">{{ $writeup->ctf }}</span>
-                    <span style="color:#fff">{{ $writeup->user->name }}</span>
+                    <span style="color:#fff"><a href="{{ route('user.public', $writeup->user) }}" style="color:#fff;text-decoration:none">{{ $writeup->user->name }}</a></span>
                     <span>{{ $writeup->created_at->format('Y-m-d') }}</span>
                 </div>
             </div>

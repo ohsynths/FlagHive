@@ -153,7 +153,7 @@
                     <div class="meta">
                         <span class="badge">{{ $w->category->name }}</span>
                         <span class="badge">{{ $w->ctf }}</span>
-                        <span style="color:#fff">{{ $w->user->name }}</span>
+                        <span style="color:#fff"><a href="{{ route('user.public', $w->user) }}" style="color:#fff;text-decoration:none">{{ $w->user->name }}</a></span>
                         <span>{{ $w->created_at->format('Y-m-d') }}</span>
                     </div>
                 </div>

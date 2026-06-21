@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\User;
 use App\Models\Writeup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -23,6 +24,12 @@ class PageController extends Controller
         $recent = Writeup::with(['user', 'category'])->latest()->take(10)->get();
 
         return view('pages.stats', compact('totalWriteups', 'totalCategories', 'totalCtfs', 'recent'));
+    }
+
+    public function publicProfile(User $user)
+    {
+        $writeups = $user->writeups()->with(['category'])->latest()->paginate(20);
+        return view('pages.user-public', compact('user', 'writeups'));
     }
 
     public function profile()

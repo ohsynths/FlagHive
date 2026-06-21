@@ -7,6 +7,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\WriteupController;
 
 Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/u/{user}', [PageController::class, 'publicProfile'])->name('user.public');
 
 Route::prefix('writeups')->group(function () {
     Route::get('/', [WriteupController::class, 'index'])->name('writeups');

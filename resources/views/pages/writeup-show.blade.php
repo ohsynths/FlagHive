@@ -88,6 +88,13 @@
         padding: 0;
     }
 
+    .markdown-body img {
+        max-width: 100%;
+        height: auto;
+        border: 1px solid #333;
+        margin: 1em 0;
+    }
+
     .markdown-body a {
         color: #fff;
         text-decoration: underline;
@@ -240,7 +247,7 @@
             <div class="meta-row">
                 <span class="badge">{{ $writeup->category->name }}</span>
                 <span class="badge">{{ $writeup->ctf }}</span>
-                <span style="color:#fff">{{ $writeup->user->name }}</span>
+                <span style="color:#fff"><a href="{{ route('user.public', $writeup->user) }}" style="color:#fff;text-decoration:none">{{ $writeup->user->name }}</a></span>
                 <span>{{ $writeup->created_at->format('Y-m-d') }}</span>
             </div>
 
@@ -300,4 +307,5 @@
             if (e.key === 'Escape') hideDeleteModal();
         });
     </script>
+    <script>hljs.highlightAll();</script>
 @endsection
