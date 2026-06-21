@@ -7,12 +7,16 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
 
 class AuthController extends Controller
 {
+    private const int MAX_LOGIN_ATTEMPTS = 5;
+    private const int LOCKOUT_MINUTES = 15;
+
     public function showLogin()
     {
         if (Auth::check()) {
@@ -28,8 +32,20 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
+        $lockKey = 'login_lockout:' . $credentials['email'];
+
+        if (Cache::has($lockKey)) {
+            $seconds = Cache::get($lockKey) - now()->timestamp;
+            return back()->withErrors([
+                'email' => 'Account temporarily locked. Try again in ' . ceil($seconds / 60) . ' minutes.',
+            ]);
+        }
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
+            Cache::forget('login_attempts:' . $credentials['email']);
+            Cache::forget($lockKey);
 
             ActivityLog::create([
                 'user_id' => Auth::id(),
@@ -38,6 +54,15 @@ class AuthController extends Controller
             ]);
 
             return redirect()->route('home');
+        }
+
+        $attemptsKey = 'login_attempts:' . $credentials['email'];
+        $attempts = (int) Cache::get($attemptsKey, 0) + 1;
+        Cache::put($attemptsKey, $attempts, now()->addHour());
+
+        if ($attempts >= self::MAX_LOGIN_ATTEMPTS) {
+            Cache::put($lockKey, now()->addMinutes(self::LOCKOUT_MINUTES)->timestamp, now()->addMinutes(self::LOCKOUT_MINUTES));
+            Cache::forget($attemptsKey);
         }
 
         return back()->withErrors([
@@ -58,13 +83,22 @@ class AuthController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'confirmed', 'min:8'],
+            'password' => [
+                'required',
+                'confirmed',
+                'min:8',
+                'regex:/[A-Z]/',
+                'regex:/[a-z]/',
+                'regex:/[0-9]/',
+                'regex:/[^A-Za-z0-9]/',
+            ],
         ]);
 
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'password_changed_at' => now(),
         ]);
 
         event(new Registered($user));
@@ -120,7 +154,15 @@ class AuthController extends Controller
         $request->validate([
             'token' => ['required'],
             'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed', 'min:8'],
+            'password' => [
+                'required',
+                'confirmed',
+                'min:8',
+                'regex:/[A-Z]/',
+                'regex:/[a-z]/',
+                'regex:/[0-9]/',
+                'regex:/[^A-Za-z0-9]/',
+            ],
         ]);
 
         $status = Password::reset(
@@ -128,6 +170,7 @@ class AuthController extends Controller
             function ($user, $password) {
                 $user->forceFill([
                     'password' => Hash::make($password),
+                    'password_changed_at' => now(),
                 ])->save();
 
                 event(new PasswordReset($user));

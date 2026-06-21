@@ -13,7 +13,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    protected $fillable = ["name", "email", "password", "avatar", "is_admin", "banned_at"];
+    protected $fillable = ["name", "email", "password", "avatar", "is_admin", "banned_at", "password_changed_at"];
 
     protected $hidden = ["password", "remember_token"];
 

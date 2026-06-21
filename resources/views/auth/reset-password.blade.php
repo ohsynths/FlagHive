@@ -123,6 +123,10 @@
                     <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
                 </div>
 
+                <div class="form-group" style="font-size:0.75rem;color:#555;margin-bottom:0.75rem">
+                    password must contain uppercase, lowercase, digit, and special character (min 8 chars)
+                </div>
+
                 <div class="form-group">
                     <label for="password">new password</label>
                     <input id="password" type="password" name="password" required>
