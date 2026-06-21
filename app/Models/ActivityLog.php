@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/** @method static \App\Models\ActivityLog create(array $attributes) */
 class ActivityLog extends Model
 {
     protected $fillable = ['user_id', 'action', 'description', 'subject_id', 'subject_type'];

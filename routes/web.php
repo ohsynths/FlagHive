@@ -8,20 +8,20 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\WriteupController;
 
-Route::get('/', [PageController::class, 'home'])->name('home');
-Route::get('/u/{user}', [PageController::class, 'publicProfile'])->name('user.public');
+Route::get('/', [PageController::class, 'home'])->middleware('throttle:60,1')->name('home');
+Route::get('/u/{user}', [PageController::class, 'publicProfile'])->middleware('throttle:60,1')->name('user.public');
 
 Route::prefix('writeups')->group(function () {
-    Route::get('/', [WriteupController::class, 'index'])->name('writeups');
+    Route::get('/', [WriteupController::class, 'index'])->middleware('throttle:60,1')->name('writeups');
     Route::get('/create', [WriteupController::class, 'create'])->middleware(['auth', 'verified'])->name('writeups.create');
     Route::post('/', [WriteupController::class, 'store'])->middleware(['auth', 'verified'])->name('writeups.store');
-    Route::get('/{writeup}', [WriteupController::class, 'show'])->name('writeups.show');
+    Route::get('/{writeup}', [WriteupController::class, 'show'])->middleware('throttle:60,1')->name('writeups.show');
     Route::get('/{writeup}/edit', [WriteupController::class, 'edit'])->middleware(['auth', 'verified'])->name('writeups.edit');
     Route::put('/{writeup}', [WriteupController::class, 'update'])->middleware(['auth', 'verified'])->name('writeups.update');
     Route::delete('/{writeup}', [WriteupController::class, 'destroy'])->middleware(['auth', 'verified'])->name('writeups.destroy');
 });
 
-Route::get('/stats', [PageController::class, 'stats'])->name('stats');
+Route::get('/stats', [PageController::class, 'stats'])->middleware('throttle:30,1')->name('stats');
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'showLogin')->name('login');
