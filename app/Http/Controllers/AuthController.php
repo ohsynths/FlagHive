@@ -36,6 +36,13 @@ class AuthController extends Controller
 
         if (Cache::has($lockKey)) {
             $seconds = Cache::get($lockKey) - now()->timestamp;
+
+            ActivityLog::create([
+                'user_id' => User::where('email', $credentials['email'])->first()?->id,
+                'action' => 'user.login-locked',
+                'description' => "Locked login for {$credentials['email']}",
+            ]);
+
             return back()->withErrors([
                 'email' => 'Account temporarily locked. Try again in ' . ceil($seconds / 60) . ' minutes.',
             ]);
@@ -64,6 +71,14 @@ class AuthController extends Controller
             Cache::put($lockKey, now()->addMinutes(self::LOCKOUT_MINUTES)->timestamp, now()->addMinutes(self::LOCKOUT_MINUTES));
             Cache::forget($attemptsKey);
         }
+
+        $user = User::where('email', $credentials['email'])->first();
+
+        ActivityLog::create([
+            'user_id' => $user?->id,
+            'action' => 'user.login-failed',
+            'description' => "Failed login attempt for {$credentials['email']}",
+        ]);
 
         return back()->withErrors([
             'email' => 'Invalid credentials.',

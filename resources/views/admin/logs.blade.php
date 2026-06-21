@@ -148,8 +148,9 @@
             </div>
         </div>
 
-        <form class="filters" method="GET" action="{{ route('admin.logs') }}">
+            <form class="filters" method="GET" action="{{ route('admin.logs') }}">
             <input type="text" name="search" placeholder="search..." value="{{ request('search') }}">
+            <input type="text" name="ip" placeholder="ip address..." value="{{ request('ip') }}" style="flex:0 1 140px">
             <select name="user">
                 <option value="">all users</option>
                 @foreach ($users as $u)
@@ -163,7 +164,7 @@
                 @endforeach
             </select>
             <button type="submit">[filter]</button>
-            @if (request()->anyFilled(['search', 'user', 'action']))
+            @if (request()->anyFilled(['search', 'user', 'action', 'ip']))
                 <a href="{{ route('admin.logs') }}" style="color:#888;font-size:0.75rem">[clear]</a>
             @endif
         </form>
@@ -175,6 +176,7 @@
                         <th>USER</th>
                         <th>ACTION</th>
                         <th>DESCRIPTION</th>
+                        <th>IP</th>
                         <th>WHEN</th>
                     </tr>
                 </thead>
@@ -184,6 +186,7 @@
                             <td>{{ $log->user?->name ?? '—' }}</td>
                             <td>{{ $log->action }}</td>
                             <td>{{ $log->description }}</td>
+                            <td style="font-size:0.75rem;color:#555">{{ $log->ip_address ?? '—' }}</td>
                             <td>{{ $log->created_at->format('Y-m-d H:i:s') }}</td>
                         </tr>
                     @endforeach

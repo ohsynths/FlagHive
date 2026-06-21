@@ -50,6 +50,7 @@
         "test": [
             "@php artisan config:clear --ansi @no_additional_args",
             "@composer audit --no-interaction --ansi",
+            "npm audit --audit-level=high || true",
             "@php artisan test"
         ],
         "post-autoload-dump": [

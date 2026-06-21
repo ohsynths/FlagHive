@@ -52,6 +52,10 @@ class AdminController extends Controller
             $query->where('action', $action);
         }
 
+        if ($ip = request('ip')) {
+            $query->where('ip_address', $ip);
+        }
+
         $logs = $query->latest()->paginate(50);
 
         $users = User::orderBy('name')->get();
